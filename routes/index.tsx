@@ -1,24 +1,38 @@
-import { Head } from "$fresh/runtime.ts";
+import { HandlerContext, Handlers } from "$fresh/server.ts";
 
-export default function Home() {
-  return (
-    <>
-      <Head>
-        <title>He's just like me fr fr</title>
-        <meta content="He's just like me fr fr" property="og:title" />
-        <meta content="He's just like me fr fr" property="og:description" />
-        <meta content="https://justlikemefr.fr" property="og:url" />
-        <meta content="https://justlikemefr.fr/img.jpg" property="og:image" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="He's just like me fr fr" />
-        <meta name="twitter:description" content="He's just like me fr fr" />
-        <meta name="twitter:image" content="https://justlikemefr.fr/img.jpg" />
-      </Head>
-      <img
-        src="/img.jpg"
-        class="w-full"
-        alt="he's just like me fr fr"
-      />
-    </>
-  );
-}
+export const handler: Handlers = {
+  GET(req: Request, _ctx: HandlerContext) {
+    const { hostname } = new URL(req.url);
+    const first = hostname.split(".")[0];
+    const pronoun = first === "he" || first === "she" ? first : "they";
+    const capitalized = pronoun[0].toUpperCase() + pronoun.slice(1);
+    return new Response(
+      `<!DOCTYPE html>
+<html>
+  <head>
+    <title>${capitalized} just like me fr fr</title>
+    <meta content="${capitalized} just like me fr fr" property="og:title" />
+    <meta content="${capitalized} just like me fr fr" property="og:description" />
+    <meta content="${req.url}" property="og:url" />
+    <meta content="${req.url}/${pronoun}.jpg" property="og:image" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${capitalized} just like me fr fr" />
+    <meta name="twitter:description" content="${capitalized} just like me fr fr" />
+    <meta name="twitter:image" content="${req.url}/${pronoun}.jpg" />
+  </head>
+  <body style="margin:0px;padding:0px;">
+    <img
+      src="/${pronoun}.jpg"
+      style="width: 100vw; height: 100vh;"
+      alt="${capitalized} just like me fr fr"
+    >
+  </body>
+</html>`,
+      {
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+        },
+      },
+    );
+  },
+};
