@@ -13,12 +13,12 @@ export const handler: Handlers = {
     <title>${capitalized} just like me fr fr</title>
     <meta content="${capitalized} just like me fr fr" property="og:title" />
     <meta content="${capitalized} just like me fr fr" property="og:description" />
-    <meta content="${req.url}" property="og:url" />
-    <meta content="${req.url}/${pronoun}.jpg" property="og:image" />
+    <meta content="https://${hostname}" property="og:url" />
+    <meta content="https://${hostname}/${pronoun}.jpg" property="og:image" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${capitalized} just like me fr fr" />
     <meta name="twitter:description" content="${capitalized} just like me fr fr" />
-    <meta name="twitter:image" content="${req.url}/${pronoun}.jpg" />
+    <meta name="twitter:image" content="https://${hostname}/${pronoun}.jpg" />
   </head>
   <body style="margin:0px;padding:0px;">
     <img
